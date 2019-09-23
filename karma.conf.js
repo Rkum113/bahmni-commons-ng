@@ -1,17 +1,14 @@
 const webpackConfig = require('./webpack.config.js');
-webpackConfig.devtool = 'inline-source-map';
-webpackConfig.mode = 'development'
 
 module.exports = (config) => {
     config.set({
         basePath: '',
         frameworks: ['jasmine'],
-        browsers: ['Firefox'],
+        browsers: ['jsdom'],
         browserNoActivityTimeout: 100000,
         autoWatch: false,
         singleRun: true,
         files: [
-
             {pattern: 'node_modules/angular/angular.js', watched: false},
             {pattern: 'node_modules/angular-mocks/angular-mocks.js', watched: false},
             {pattern: 'node_modules/moment/min/moment.min.js', watched: false},
@@ -35,12 +32,17 @@ module.exports = (config) => {
             {pattern: 'dist/bahmni-patient-commons.js', watched: false},
             {pattern: 'test/**/*spec.js', watched: false},
         ],
-        reporters: ['junit', 'progress'],
-
+        reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
-            'src/**/*.js': ['webpack', 'sourcemap'],
+            'dist/**/*.js': ['webpack', 'coverage'],
         },
-
+        coverageReporter: {
+            reporters: [
+                {type: 'json', dir: 'coverage/'},
+                {type: 'html', dir: 'coverage/'},
+                {type: 'text-summary'}
+            ]
+        },
         webpack: webpackConfig,
         webpackMiddleware: {
             stats: 'errors-only',
