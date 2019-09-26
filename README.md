@@ -51,6 +51,20 @@ Below is the structure of project:
     ```
     npm run test
     ```  
+
+### Expose templates from a module
+Right now there are two ways the templates are exposed from module.
+* We can expose the template as part of a directive. E.g. `bahmni-patient-commons/directives/patientSummary.js` defines a directive `patientSummary` which exposes `patientSummary.html` template.
+* The templates can be provided in the `$templateCache`. The applications using the bundles should look for these templates from `$templateCache` using the `key`. The `key` used to put the template must be documented. E.g. `ui-helper/init.js` exposes common templates which are used across components.
+
+### Template Cache exposed by modules
+| Module | Key in TemplateCache | Template Path |
+| ------ | :-------------------:| ------------ |
+| ui-helper | ui-helper-error | src/bahmni-uihelper-commons/error.html |
+| ui-helper | ui-helper-header | src/bahmni-uihelper-commons/header.html |
+| ui-helper | ui-helper-messages | src/bahmni-uihelper-commons/messages.html |
+| ui-helper | ui-helper-save-confirmation | src/bahmni-uihelper-commons/views/saveConfirmation.html |
+  
 #### Test framework setup
 The test are being run against the generated bundles. Since these bundles need all the dependencies to be present and loaded before the bundle, the dependencies are included in `files` section of `karma-config` in `karma.config.js`.
 
@@ -58,4 +72,4 @@ The test are being run against the generated bundles. Since these bundles need a
 * The `test/lib` folder will contain any custom library required by bundles. As of now, It contains a manually edited version jquery.cookie@1.4.1. The line 12 is changed to `define(['jquery/jquery'], factory);` instead of `define(['jquery'], factory);` because jquery `1.x` is not fully compatible with webpack.
  [Reference link](https://github.com/facebook/create-react-app/issues/679#issuecomment-247928334)
 * The `test/support` folder will contain helper files for tests.
-* The `init-constants.js` file contains specific constants needed by the bundles like `openmrs-base-url`.   
+* The `init-constants.js` file contains specific constants needed by the bundles like `openmrs-base-url`.

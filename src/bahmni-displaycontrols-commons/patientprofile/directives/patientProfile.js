@@ -33,7 +33,7 @@
         .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate',
             'configurations', '$q', 'visitService',
             function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService) {
-                var controller = function ($scope) {
+                var controller = ['$scope', function ($scope) {
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
@@ -83,7 +83,7 @@
                     initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
                     initPromise.then(setDirectiveAsReady);
                     $scope.initialization = initPromise;
-                };
+                }];
 
                 var link = function ($scope, element) {
                     spinner.forPromise($scope.initialization, element);

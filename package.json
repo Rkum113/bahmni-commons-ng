@@ -1,10 +1,9 @@
 {
   "name": "bahmni-commons-ng",
-  "version": "0.0.1-beta.6",
+  "version": "0.0.1-beta.1",
   "description": "Common Modules carved out from bahmniapps.",
   "scripts": {
-    "bundle": "webpack --progress --colors --mode=production",
-    "build": "webpack --progress --colors --mode=development",
+    "bundle": "webpack --progress --colors",
     "test": "npm run bundle && karma start"
   },
   "author": "bahmni@thoughtworks.com",
@@ -28,14 +27,17 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
     "url-loader": "^2.0.1",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8"
+    "webpack": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
     "angular": "1.4.9",
     "moment": "2.18.1",
     "jquery": "1.9.1",
     "@uirouter/angularjs": "0.2.18",
+    "ng-clip": "0.2.5",
+    "zeroclipboard": "~2.1.0",
+    "angular-translate": "2.7.2",
     "offline": "github:HubSpot/offline#v0.7.14"
   }
 }
