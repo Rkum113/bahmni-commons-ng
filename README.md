@@ -73,3 +73,19 @@ The test are being run against the generated bundles. Since these bundles need a
  [Reference link](https://github.com/facebook/create-react-app/issues/679#issuecomment-247928334)
 * The `test/support` folder will contain helper files for tests.
 * The `init-constants.js` file contains specific constants needed by the bundles like `openmrs-base-url`.
+
+#### Troubleshooting
+* While importing a new module, if we face a problem of `[$injector:unpr] Unknown provider:` followed by something like `eProvider <- e`, most likely the cause is not using inline array annotation for dependency injection. See `Inline Array Annotation and Implicit Annotation` sections of https://docs.angularjs.org/guide/di.
+  When we use the implicit DI, the variables gets minified while bundling and angular cannot inject these new minified variables. To fix this problem change the affected controller/service/filter/etc to use  inline array annotation of DI. 
+
+  E.g:
+  Below code will fail, when using as `webpack production` bundle
+  ```
+      controller: function ($scope, backlinkService) {
+      }
+  ```
+  Above can be written as      
+  ```
+        controller: ['$scope', 'backlinkService', function ($scope, backlinkService) {
+        }
+    ```
