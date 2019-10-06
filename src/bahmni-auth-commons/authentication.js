@@ -27,11 +27,12 @@ angular.module('authentication')
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
-        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
+        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session';
+        var sessionResourcePathQueryUuid = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
 
         var getAuthFromServer = function (username, password, otp) {
             var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password;
-            return $http.get(sessionResourcePath, {
+            return $http.get(sessionResourcePathQueryUuid, {
                 headers: {'Authorization': 'Basic ' + window.btoa(btoa)},
                 cache: false
             });
@@ -39,7 +40,7 @@ angular.module('authentication')
 
         this.resendOTP = function (username, password) {
             var btoa = username + ':' + password;
-            return $http.get(sessionResourcePath + '&resendOTP=true', {
+            return $http.get(sessionResourcePathQueryUuid + '&resendOTP=true', {
                 headers: {'Authorization': 'Basic ' + window.btoa(btoa)},
                 cache: false
             });
@@ -79,7 +80,7 @@ angular.module('authentication')
         var self = this;
 
         var destroySessionFromServer = function () {
-            return $http.delete(sessionResourcePath);
+            return $http.delete(sessionResourcePathQueryUuid);
         };
 
         var sessionCleanup = function () {
@@ -120,8 +121,19 @@ angular.module('authentication')
             return deferrable.promise;
         };
 
-        this.get = function () {
-            return $http.get(sessionResourcePath, { cache: false });
+        this.get = function (queryParts) {
+            var sessionQueryPath;
+            if (queryParts) {
+                sessionQueryPath = sessionResourcePath + queryParts;
+            } else {
+                sessionQueryPath = sessionResourcePathQueryUuid;
+            }
+            return $http.get(sessionQueryPath, { cache: false });
+        };
+
+        this.fetchLoginLocation = function () {
+            var fetchLoginLocationURL = Bahmni.Common.Constants.fetchLoginLocationURL;
+            return $http.get(fetchLoginLocationURL, { cache: false });
         };
 
         this.loadCredentials = function () {

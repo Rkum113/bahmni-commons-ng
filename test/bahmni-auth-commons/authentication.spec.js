@@ -207,4 +207,38 @@ describe("Authentication", function () {
         }]));
     });
 
+    describe("get", function () {
+        it("should get session details with uuid by default", inject(['$http', 'sessionService', function ($http, sessionService) {
+            spyOn($http, 'get');
+
+            sessionService.get();
+
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid)', {
+                cache: false
+            })
+        }]));
+
+        it("should get session details with given query params", inject(['$http', 'sessionService', function ($http, sessionService) {
+            spyOn($http, 'get');
+
+            sessionService.get('?v=custom:(uuid,id)');
+
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid,id)', {
+                cache: false
+            })
+        }]))
+    });
+
+    describe("fetchLoginLocation", function () {
+        it("should request to get login location from given URL", inject(['$http', 'sessionService', function ($http, sessionService) {
+            spyOn($http, 'get');
+
+            sessionService.fetchLoginLocation();
+
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appui/session', {
+                cache: false
+            })
+        }]));
+    })
+
 });
