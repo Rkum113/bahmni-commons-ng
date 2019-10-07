@@ -41,17 +41,18 @@ angular.module('bahmni.common.util', [])
     }])
 ;
 
-require('../../lib/modernizr.custom.80690')
+require('../../lib/modernizr.custom.80690');
 
-require('./ageUtil')
-require('./arrayUtil')
-require('./dateTimeFormatter')
-require('./dateUtil')
-require('./dynamicResourceLoader')
-require('./formFieldPathUtil')
-require('./httpErrorInterceptor')
-require('./iosLabelFix')
-require('./modernizr.tests')
-require('./offlineStatusService')
-require('./stringFormat')
-require('./validationUtil')
+require('./ageUtil');
+require('./arrayUtil');
+require('./dateTimeFormatter');
+require('./dateUtil');
+require('./dynamicResourceLoader');
+require('./formFieldPathUtil');
+require('./httpErrorInterceptor');
+require('./iosLabelFix');
+require('./modernizr.tests');
+require('./offlineStatusService');
+require('./stringFormat');
+require('./validationUtil');
+require('./openmrsHelperService');

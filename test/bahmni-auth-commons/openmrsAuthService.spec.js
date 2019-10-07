@@ -14,12 +14,6 @@ describe("OpenMRSAuthService", function () {
         $provide.value('$q', $q);
     }));
 
-    // beforeEach(inject(function($injector) {
-    //     rootScope = $injector.get('$rootScope');
-    //     spyOn(rootScope, '$broadcast');
-    // }));
-
-
     describe("populateLoginDetails", function () {
         it("should set username and login location in cookies", inject(['sessionService', '$rootScope', 'openMRSAuthService', function (sessionService, $rootScope, openMRSAuthService) {
             function promiseFor(responseData) {
