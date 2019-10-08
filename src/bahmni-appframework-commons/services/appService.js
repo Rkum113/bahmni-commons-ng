@@ -7,8 +7,6 @@ angular.module('bahmni.common.appFramework')
     .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService', 'loadConfigService', 'messagingService', '$translate',
         function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService, messagingService, $translate) {
             var currentUser = null;
-            var baseUrl = Bahmni.Common.Constants.baseUrl;
-            var customUrl = Bahmni.Common.Constants.customUrl;
             var appDescriptor = null;
 
             var loadConfig = function (url) {
@@ -17,7 +15,7 @@ angular.module('bahmni.common.appFramework')
 
             var loadTemplate = function (appDescriptor) {
                 var deferrable = $q.defer();
-                loadConfig(baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
+                loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/appTemplate.json").then(
                 function (result) {
                     if (_.keys(result.data).length > 0) {
                         appDescriptor.setTemplate(result.data);
@@ -45,10 +43,10 @@ angular.module('bahmni.common.appFramework')
 
             var loadDefinition = function (appDescriptor) {
                 var deferrable = $q.defer();
-                loadConfig(baseUrl + appDescriptor.contextPath + "/app.json").then(
+                loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/app.json").then(
                 function (baseResult) {
                     if (baseResult.data.shouldOverRideConfig) {
-                        loadConfig(customUrl + appDescriptor.contextPath + "/app.json").then(function (customResult) {
+                        loadConfig(Bahmni.Common.Constants.customUrl + appDescriptor.contextPath + "/app.json").then(function (customResult) {
                             setDefinition(baseResult.data, customResult.data);
                             deferrable.resolve(appDescriptor);
                         },
@@ -79,9 +77,9 @@ angular.module('bahmni.common.appFramework')
             };
             var loadExtensions = function (appDescriptor, extensionFileName) {
                 var deferrable = $q.defer();
-                loadConfig(baseUrl + appDescriptor.extensionPath + extensionFileName).then(function (baseResult) {
+                loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.extensionPath + extensionFileName).then(function (baseResult) {
                     if (baseResult.data.shouldOverRideConfig) {
-                        loadConfig(customUrl + appDescriptor.extensionPath + extensionFileName).then(
+                        loadConfig(Bahmni.Common.Constants.customUrl + appDescriptor.extensionPath + extensionFileName).then(
                         function (customResult) {
                             setExtensions(baseResult.data, customResult.data);
                             deferrable.resolve(appDescriptor);
@@ -118,10 +116,10 @@ angular.module('bahmni.common.appFramework')
 
             var loadPageConfig = function (pageName, appDescriptor) {
                 var deferrable = $q.defer();
-                loadConfig(baseUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
+                loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
                 function (baseResult) {
                     if (baseResult.data.shouldOverRideConfig) {
-                        loadConfig(customUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
+                        loadConfig(Bahmni.Common.Constants.customUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
                             function (customResult) {
                                 setDefaultPageConfig(pageName, baseResult.data, customResult.data);
                                 deferrable.resolve(appDescriptor);
@@ -149,18 +147,18 @@ angular.module('bahmni.common.appFramework')
             };
 
             this.configBaseUrl = function () {
-                return baseUrl;
+                return Bahmni.Common.Constants.baseUrl;
             };
 
             this.loadCsvFileFromConfig = function (name) {
-                return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name);
+                return loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/" + name);
             };
 
             this.loadConfig = function (name, shouldMerge) {
-                return loadConfig(baseUrl + appDescriptor.contextPath + "/" + name).then(
+                return loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/" + name).then(
                 function (baseResponse) {
                     if (baseResponse.data.shouldOverRideConfig) {
-                        return loadConfig(customUrl + appDescriptor.contextPath + "/" + name).then(function (customResponse) {
+                        return loadConfig(Bahmni.Common.Constants.customUrl + appDescriptor.contextPath + "/" + name).then(function (customResponse) {
                             if (shouldMerge || shouldMerge === undefined) {
                                 return mergeService.merge(baseResponse.data, customResponse.data);
                             }
