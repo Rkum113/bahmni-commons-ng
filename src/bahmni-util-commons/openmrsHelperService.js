@@ -5,35 +5,38 @@ angular.module('bahmni.common.util')
         let isRunningOnOpenMRS = function () {
             let defer = $q.defer();
             let systemSettingUrl = Bahmni.Common.Constants.openMRSSystemSettingUrl;
-            let runningOnOpenMRSPromise = $http.get(systemSettingUrl + 'bahmni.appointments.runningOnOpenmrs');
-            let onError = (err) => {
-                if (err.status === 404) {
-                    /*In case of Bahmni, Global property might not exist*/
-                    defer.resolve(false);
+            let params = '?q=bahmni.appointments.runningOnOpenmrs&v=custom:(property,value)';
+            let runningOnOpenMRSPromise = $http.get(systemSettingUrl + params);
+            runningOnOpenMRSPromise.then((response) => {
+                let results = response.data.results;
+                if (results && results.length > 0) {
+                    let property = results[0];
+                    if (property.value) {
+                        let value = property.value.trim();
+                        defer.resolve(value.toLowerCase() === "true")
+                    } else {
+                        defer.resolve(false);
+                    }
                 } else {
-                    defer.reject(err.message);
-                }
-            };
-            let onData = (response) => {
-                if (response.data && response.data.value) {
-                    let value = response.data.value.trim();
-                    defer.resolve(value.toLowerCase() === "true")
-                } else {
                     defer.resolve(false);
                 }
-            };
-            runningOnOpenMRSPromise.then(onData, onError);
+            });
             return defer.promise;
         };
 
         let overrideConfigUrlForOpenMRS = function () {
             let defer = $q.defer();
             let systemSettingUrl = Bahmni.Common.Constants.openMRSSystemSettingUrl;
-            let configUrlPromise = $http.get(systemSettingUrl + 'bahmni.config.baseUrlForUIConfigs');
+            let params = '?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)';
+            let configUrlPromise = $http.get(systemSettingUrl + params);
             configUrlPromise.then((response) => {
-                if (response.data && response.data.value) {
-                    Bahmni.Common.Constants.baseUrl = response.data.value;
-                    console.log("New config location set to: ", Bahmni.Common.Constants.baseUrl);
+                let results = response.data.results;
+                if (results && results.length > 0) {
+                    let property = results[0];
+                    if (property.value) {
+                        Bahmni.Common.Constants.baseUrl = property.value;
+                        console.log("New config location set to: ", Bahmni.Common.Constants.baseUrl);
+                    }
                 } else {
                     console.log("No config location specified, using default bahmni config location", Bahmni.Common.Constants.baseUrl);
                 }
