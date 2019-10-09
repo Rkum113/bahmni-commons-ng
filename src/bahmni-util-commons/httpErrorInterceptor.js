@@ -61,7 +61,7 @@ angular.module('httpErrorInterceptor', [])
                     //TODO-Temp write test and refacor with _.some
                     if (!_.includes(response.config.url, "implementation_config") && !_.includes(response.config.url, "locale_")
                         && !_.includes(response.config.url, "offlineMetadata") && !_.includes(response.config.url, "bahmni.appointments.runningOnOpenmrs")
-                        && !_.includes(response.config.url, "bahmni.config.baseUrlForUIConfigs")) {
+                        && !_.includes(response.config.url, "bahmni.config.baseUrlForUIConfigs") && !_.includes(response.config.url, "overridden-constants.json")) {
                         showError("The requested information does not exist");
                     }
                 }
