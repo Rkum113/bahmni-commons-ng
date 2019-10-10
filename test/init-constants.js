@@ -13,6 +13,8 @@ Bahmni.Common.Constants.currentUser = 'bahmni.user';
 Bahmni.Common.Constants.locationCookieName = 'bahmni.user.location';
 Bahmni.Common.Constants.openMRSSystemSettingUrl = '/openmrs/ws/rest/v1/systemsetting';
 Bahmni.Common.Constants.baseUrl = '/bahmni_config/openmrs/apps/';
+Bahmni.Common.Constants.baseLocaleURL = '../i18n/';
+Bahmni.Common.Constants.customLocaleURL = '/bahmni_config/openmrs/i18n/';
 
 Bahmni.Registration = Bahmni.Registration || {};
 Bahmni.Registration.Constants = Bahmni.Registration.Constants || {};

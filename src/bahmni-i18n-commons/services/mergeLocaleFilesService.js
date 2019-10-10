@@ -3,8 +3,8 @@
 angular.module('bahmni.common.i18n')
     .service('mergeLocaleFilesService', ['$http', '$q', 'mergeService', function ($http, $q, mergeService) {
         return function (options) {
-            var baseLocaleUrl = '../i18n/';
-            var customLocaleUrl = Bahmni.Common.Constants.rootDir + '/bahmni_config/openmrs/i18n/';
+            var baseLocaleUrl = Bahmni.Common.Constants.baseLocaleURL;
+            var customLocaleUrl = Bahmni.Common.Constants.customLocaleURL;
 
             var loadFile = function (url) {
                 return $http.get(url, {withCredentials: true});
