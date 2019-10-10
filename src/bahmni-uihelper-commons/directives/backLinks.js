@@ -19,7 +19,7 @@ angular.module('bahmni.common.uiHelper')
         '        </a>' +
                         '</li>' +
                     '</ul>',
-         controller: function ($scope, backlinkService) {
+         controller: ['$scope', 'backlinkService', function ($scope, backlinkService) {
              $scope.backLinks = backlinkService.getAllUrls();
              $scope.$on('$stateChangeSuccess', function (event, state) {
                  if (state.data && state.data.backLinks) {
@@ -31,7 +31,7 @@ angular.module('bahmni.common.uiHelper')
              $scope.$on("$destroy", function () {
                  window.onbeforeunload = undefined;
              });
-         },
+         }],
          restrict: 'E'
      };
  });
