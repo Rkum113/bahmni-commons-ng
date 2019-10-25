@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('authentication')
-    .service('openMRSAuthService', ['$rootScope', '$q', 'sessionService', '$bahmniCookieStore',
-        function ($rootScope, $q, sessionService, $bahmniCookieStore) {
+    .service('openMRSAuthService', ['$rootScope', '$q', '$translate', 'sessionService', '$bahmniCookieStore',
+        function ($rootScope, $q, $translate, sessionService, $bahmniCookieStore) {
             return {
                 populateLoginDetails: function () {
                     var usernamePromise = sessionService.get('?v=custom:(uuid,username)')
                         .then(function (response) {
                             if (response.data.authenticated) {
                                 var username = response.data.user.username;
+                                var locale = response.data.locale || 'en';
+                                $translate.use(locale);
                                 var cookieOptions = {path: '/', expires: 7};
                                 $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, cookieOptions);
                             } else {
