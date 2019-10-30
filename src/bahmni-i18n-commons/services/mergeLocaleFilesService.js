@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.i18n')
-    .service('mergeLocaleFilesService', ['$http', '$q', 'mergeService', 'openMRSHelperService', 'appService',
-        function ($http, $q, mergeService, openMRSHelperService, appService) {
+    .service('mergeLocaleFilesService', ['$http', '$q', 'mergeService', function ($http, $q, mergeService) {
         return function (options) {
+            var baseLocaleUrl = Bahmni.Common.Constants.baseLocaleURL;
+            var customLocaleUrl = Bahmni.Common.Constants.customLocaleURL;
+
             var loadFile = function (url) {
                 return $http.get(url, {withCredentials: true});
             };
@@ -12,14 +14,14 @@ angular.module('bahmni.common.i18n')
                 var fileURL = options.app + "/locale_" + options.key + ".json";
 
                 var loadBahmniTranslations = function () {
-                    return loadFile(Bahmni.Common.Constants.baseLocaleURL + fileURL).then(function (result) {
+                    return loadFile(baseLocaleUrl + fileURL).then(function (result) {
                         return result;
                     }, function () {
                         return;
                     });
                 };
                 var loadCustomTranslations = function () {
-                    return loadFile(Bahmni.Common.Constants.customLocaleURL + fileURL).then(function (result) {
+                    return loadFile(customLocaleUrl + fileURL).then(function (result) {
                         return result;
                     }, function () {
                         return;
@@ -35,13 +37,7 @@ angular.module('bahmni.common.i18n')
                     return [baseFileData, customFileData];
                 };
 
-                let loadTranslations = function () {
-                    return $q.all([loadBahmniTranslations(), loadCustomTranslations()]);
-                };
-
-                return openMRSHelperService.overrideConfigUrlForOpenMRS()
-                    .then(appService.overrideConstants)
-                    .then(loadTranslations)
+                return $q.all([loadBahmniTranslations(), loadCustomTranslations()])
                     .then(mergeTranslations);
             };
             return mergeLocaleFile(options);
