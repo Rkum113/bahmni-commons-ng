@@ -24,30 +24,8 @@ angular.module('bahmni.common.util')
             return defer.promise;
         };
 
-        let overrideConfigUrlForOpenMRS = function () {
-            let defer = $q.defer();
-            let systemSettingUrl = Bahmni.Common.Constants.openMRSSystemSettingUrl;
-            let params = '?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)';
-            let configUrlPromise = $http.get(systemSettingUrl + params);
-            configUrlPromise.then((response) => {
-                let results = response.data.results;
-                if (results && results.length > 0) {
-                    let property = results[0];
-                    if (property.value) {
-                        Bahmni.Common.Constants.baseUrl = property.value;
-                        console.log("New config location set to: ", Bahmni.Common.Constants.baseUrl);
-                    }
-                } else {
-                    console.log("No config location specified, using default bahmni config location", Bahmni.Common.Constants.baseUrl);
-                }
-                defer.resolve();
-            });
-            return defer.promise;
-        };
-
 
         return {
-            isRunningOnOpenMRS: isRunningOnOpenMRS,
-            overrideConfigUrlForOpenMRS: overrideConfigUrlForOpenMRS
+            isRunningOnOpenMRS: isRunningOnOpenMRS
         };
     }]);
