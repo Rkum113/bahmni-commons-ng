@@ -10,7 +10,7 @@ angular.module('bahmni.common.appFramework')
             var appDescriptor = null;
 
             var loadConfig = function (url) {
-                return loadConfigService.loadConfig(url);
+                return loadConfigService.loadConfig(url, appDescriptor.contextPath);
             };
 
             var loadTemplate = function (appDescriptor) {
@@ -154,7 +154,7 @@ angular.module('bahmni.common.appFramework')
                 return loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/" + name);
             };
 
-             this.loadConfig = function (name, shouldMerge) {
+            this.loadConfig = function (name, shouldMerge) {
                 return loadConfig(Bahmni.Common.Constants.baseUrl + appDescriptor.contextPath + "/" + name).then(
                 function (baseResponse) {
                     if (baseResponse.data.shouldOverRideConfig) {
@@ -230,28 +230,4 @@ angular.module('bahmni.common.appFramework')
                 });
                 return appLoader.promise;
             };
-
-            this.overrideConstants = function () {
-                return loadConfig(Bahmni.Common.Constants.baseUrl + "overridden-constants.json")
-                    .then((response) => {
-                        console.log("Overriding constants");
-                        var overriddenBahmniConstants = response.data.Bahmni;
-                        var moduleNames = _.keys(overriddenBahmniConstants);
-                        _.forEach(moduleNames, function (moduleName) {
-                            var moduleConstants = overriddenBahmniConstants[moduleName]["Constants"];
-                            var keysForConstants = _.keys(moduleConstants);
-                            _.forEach(keysForConstants, function (keyForConstant) {
-                                if (moduleName === "Common" && keyForConstant === "baseUrl"){
-                                    console.log("Bahmni.Common.Constants.baseUrl should be overridden using global properties only");
-                                }
-                                else if (Bahmni[moduleName]["Constants"][keyForConstant]) {
-                                    Bahmni[moduleName]["Constants"][keyForConstant] = moduleConstants[keyForConstant];
-                                }
-                            });
-                        });
-                    }, (err) => {
-                        console.log(err);
-                    })
-
-            }
         }]);
