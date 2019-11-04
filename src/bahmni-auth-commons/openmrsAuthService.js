@@ -10,7 +10,8 @@ angular.module('authentication')
                             if (response.data.authenticated) {
                                 var username = response.data.user.username;
                                 var locale = response.data.locale || 'en';
-                                $translate.use(locale);
+                                var es5IntlCompatibleLocale = locale.replace("_", "-");
+                                $translate.use(es5IntlCompatibleLocale);
                                 var cookieOptions = {path: '/', expires: 7};
                                 $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, cookieOptions);
                             } else {

@@ -38,7 +38,7 @@ describe("OpenMRSAuthService", function () {
 
             expect($bahmniCookieStore.put).toHaveBeenCalledWith('bahmni.user', 'abc', {path: '/', expires: 7});
             expect($bahmniCookieStore.put).toHaveBeenCalledWith('bahmni.user.location', {name:'abc', uuid:'123'}, {path: '/', expires: 7});
-            expect($translate.use).toHaveBeenCalledWith('en_GB');
+            expect($translate.use).toHaveBeenCalledWith('en-GB');
         }]));
 
         it("should set error when not authenticated", inject(['sessionService', '$rootScope', 'openMRSAuthService', function (sessionService, $rootScope, openMRSAuthService) {
