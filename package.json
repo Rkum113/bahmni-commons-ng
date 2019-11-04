@@ -1,6 +1,6 @@
 {
   "name": "bahmni-commons-ng",
-  "version": "0.0.1-beta.7",
+  "version": "0.0.1",
   "description": "Common Modules carved out from bahmniapps.",
   "scripts": {
     "bundle": "webpack --progress --colors",
