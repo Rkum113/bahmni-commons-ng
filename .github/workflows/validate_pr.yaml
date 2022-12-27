@@ -1,0 +1,18 @@
+name: Validate PR
+
+on: 
+ pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js v14.17.0
+        uses: actions/setup-node@v1
+        with:
+         node-version: v14.17.0
+      - run: npm install
+      - run: npm run bundle
+      - run: npm run test  
