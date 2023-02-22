@@ -14,8 +14,8 @@ jobs:
         with:
          node-version: v14.17.0
       - name: Install dependencies
-      - run: npm install
+        run: npm install
       - name: Run bundle commands
-      - run: npm run bundle
+        run: npm run bundle
       - name: Run test command
-      - run: npm run test  
+        run: npm run test  
